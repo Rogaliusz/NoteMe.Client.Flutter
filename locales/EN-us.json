@@ -1,0 +1,13 @@
+{
+  "global": {
+    "password": "Password",
+    "email": "Email",
+    "login": "Login",
+    "sign_up": "Sign up"
+  },
+  "login": {},
+  "validators": {
+    "required": "Is required",
+    "invalid_format": "Invalid format"
+  }
+}
