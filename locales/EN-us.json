@@ -5,7 +5,9 @@
     "login": "Login",
     "sign_up": "Sign up"
   },
-  "login": {},
+  "login": {
+    "invalid": "Invalid credentials, please try again"
+  },
   "validators": {
     "required": "Is required",
     "invalid_format": "Invalid format"

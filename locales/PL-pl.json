@@ -5,7 +5,9 @@
     "login": "Zaloguj",
     "sign_up": "Zarejestruj"
   },
-  "login": {},
+  "login": {
+    "invalid": "Niepoprawne dane do zalogowania, spróbuj ponownie."
+  },
   "validators": {
     "required": "Pole jest wymagane",
     "invalid_format": "Niepoprawny format"

@@ -4,10 +4,12 @@ import 'package:noteme/domain/auth/login/events/login_event.dart';
 import 'package:noteme/domain/auth/login/login_bloc.dart';
 import 'package:noteme/domain/auth/login/states/logged_state.dart';
 import 'package:noteme/domain/auth/signup/signup_view.dart';
+import 'package:noteme/domain/notes/notes_view.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
 import 'package:noteme/framework/navigation/navigrator.dart';
 import 'package:noteme/generated/locale_base.dart';
 import 'package:noteme/theme/backgrounds/unlogged_background.dart';
+import 'package:noteme/theme/services/toast_service.dart';
 import 'package:noteme/theme/widgets/form/text_input_form_control.dart';
 import 'package:noteme/theme/widgets/form/validators/required_validator.dart';
 import 'package:noteme/theme/widgets/text_button.dart';
@@ -18,13 +20,17 @@ class LoginPage extends StatefulWidget {
   LoginPage() : super();
 
   @override
-  LoginPageState createState() => LoginPageState();
+  LoginPageState createState() => getIt<LoginPageState>();
 }
 
 @injectable
 class LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _key = new GlobalKey<FormState>();
+  final ToastService _toastService;
 
+  LoginPageState(this._toastService);
+
+  LocaleBase locale;
   LoginBloc _bloc;
 
   String _login;
@@ -47,14 +53,21 @@ class LoginPageState extends State<LoginPage> {
   onData(LoggedState state) {
     switch (state.runtimeType) {
       case LoginOkState:
-        {}
+        {
+          NoteMeNavigator.push<NotesPage>(context);
+        }
+        break;
+      case LoginErrorState:
+        {
+          _toastService.show(locale.login.invalid);
+        }
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.of<LocaleBase>(context, LocaleBase);
+    locale = Localizations.of<LocaleBase>(context, LocaleBase);
 
     return Scaffold(
       body: UnloggedBackgroundBox(

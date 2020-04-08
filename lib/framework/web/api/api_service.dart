@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
-import 'package:noteme/framework/web/api/api_response.dart';
+import 'package:noteme/framework/web/api/responses/api_response.dart';
+
 import 'api_settings.dart';
 
 @injectable

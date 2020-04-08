@@ -7,7 +7,8 @@
   },
   "login": {
     "login": "Login",
-    "password": ""
+    "password": "",
+    "invalid": "Invalid credentials"
   },
   "validators": {
     "required": "Required",

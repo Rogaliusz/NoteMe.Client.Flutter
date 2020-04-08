@@ -46,6 +46,7 @@ class Localelogin {
 
   String get login => _data["login"];
   String get password => _data["password"];
+  String get invalid => _data["invalid"];
 }
 class Localevalidators {
   final Map<String, String> _data;
