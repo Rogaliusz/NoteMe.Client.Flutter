@@ -14,14 +14,10 @@ class NotesPage extends StatefulWidget {
 
 @injectable
 class NotesPageState extends State<NotesPage> {
-  final SynchronizationWorker _worker;
-
-  NotesPageState(this._worker);
+  NotesPageState();
 
   @override
   Widget build(BuildContext context) {
-    SynchronizationWorker.start();
-
     return LoggedBackgroundBox(
         child: Container(
       child: Text('KURWAA'),

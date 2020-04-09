@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injectable/injectable.dart';
 import 'package:noteme/domain/auth/login/login_view.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/web/api/api_settings.dart';
 import 'package:noteme/generated/locale_base.dart';
 import 'package:noteme/locales/locale_delegate.dart';
@@ -12,6 +13,7 @@ import 'package:noteme/theme/services/loader_service.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'domain/auth/messages/logged_message.dart';
 import 'framework/ioc/injection.dart';
 import 'main_init.dart';
 
@@ -60,6 +62,9 @@ class NoteMeApp extends StatelessWidget {
   }
 
   Future<bool> isLoggedIn() async {
+    // final bus = getIt<MessageBus>();
+    // await bus.publish(new LoggedMessage());
+
     return false;
   }
 }

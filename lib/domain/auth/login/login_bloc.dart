@@ -4,7 +4,9 @@ import 'package:injectable/injectable.dart';
 import 'package:noteme/domain/auth/login/events/login_event.dart';
 import 'package:noteme/domain/auth/login/models/jwt_model.dart';
 import 'package:noteme/domain/auth/login/states/logged_state.dart';
+import 'package:noteme/domain/auth/messages/logged_message.dart';
 import 'package:noteme/framework/bloc/bloc_provider.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/web/api/api_endpoints.dart';
 import 'package:noteme/framework/web/api/api_service.dart';
 import 'package:noteme/framework/web/api/api_settings.dart';
@@ -18,11 +20,13 @@ class LoginBloc implements NoteMeBloc {
   final LoaderService _loaderService;
   final ApiSettings _apiSettings;
   final ApiService _apiService;
+  final MessageBus _messageBus;
 
   StreamSink<LoginEvent> get login => _loginStateController.sink;
   Stream<LoggedState> get logged => _loggedStateController.stream;
 
-  LoginBloc(this._loaderService, this._apiSettings, this._apiService) {
+  LoginBloc(this._loaderService, this._apiSettings, this._apiService,
+      this._messageBus) {
     _loginStateController.stream.listen(onData);
   }
 
@@ -37,6 +41,8 @@ class LoginBloc implements NoteMeBloc {
       var jwt = Jwt.fromJson(response.json);
 
       _apiSettings.loggedUser = jwt;
+      await _messageBus.publish(new LoggedMessage());
+
       _loggedStateController.add(new LoginOkState(jwt));
     } else {
       _loggedStateController.add(new LoginErrorState(response.body));

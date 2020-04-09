@@ -13,12 +13,12 @@ class Note implements SynchonizationProvider {
   @override
   DateTime lastSynchronization;
   @override
-  SynchronizationStatusEnum statusSynchronization;
+  int statusSynchronization;
 
   String name;
   String content;
   String tags;
-  StatusEnum status;
+  int status;
 
   DateTime createdAt;
   DateTime modifiedAt;

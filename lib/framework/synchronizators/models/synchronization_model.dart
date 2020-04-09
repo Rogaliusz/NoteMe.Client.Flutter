@@ -14,7 +14,7 @@ class Synchronization implements SynchonizationProvider {
   @override
   DateTime lastSynchronization;
   @override
-  SynchronizationStatusEnum statusSynchronization;
+  int statusSynchronization;
 
   factory Synchronization.fromJson(Map<String, dynamic> json) =>
       _$SynchronizationFromJson(json);

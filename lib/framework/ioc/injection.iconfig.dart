@@ -16,9 +16,11 @@ import 'package:noteme/theme/services/toast_service.dart';
 import 'package:noteme/domain/auth/signup/signup_view.dart';
 import 'package:noteme/domain/auth/signup/signup_bloc.dart';
 import 'package:noteme/domain/auth/login/login_bloc.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/domain/auth/login/login_view.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
 import 'package:noteme/domain/notes/notes_view.dart';
+import 'package:noteme/domain/auth/messages/logged_message.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -28,7 +30,7 @@ void $initGetIt({String environment}) {
         () => SynchronizationRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<MainSynchronizator>(() => MainSynchronizator(
         getIt<SynchronizationRepository>(), getIt<NotesSynchronizator>()))
-    ..registerFactory<ApiService>(() => ApiService(getIt<ApiSettings>()))
+    ..registerLazySingleton<ApiService>(() => ApiService(getIt<ApiSettings>()))
     ..registerLazySingleton<ApiSettings>(() => ApiSettings())
     ..registerLazySingleton<SynchronizationWorker>(
         () => SynchronizationWorker())
@@ -42,6 +44,7 @@ void $initGetIt({String environment}) {
           getIt<LoaderService>(),
           getIt<ApiSettings>(),
           getIt<ApiService>(),
+          getIt<MessageBus>(),
         ))
     ..registerFactory<LoginPage>(() => LoginPage())
     ..registerFactory<LoginPageState>(
@@ -49,8 +52,10 @@ void $initGetIt({String environment}) {
     ..registerLazySingleton<NoteRepository>(
         () => NoteRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<NotesPage>(() => NotesPage())
-    ..registerFactory<NotesPageState>(
-        () => NotesPageState(getIt<SynchronizationWorker>()))
-    ..registerLazySingleton<NotesSynchronizator>(() =>
-        NotesSynchronizator(getIt<ApiService>(), getIt<NoteRepository>()));
+    ..registerFactory<NotesPageState>(() => NotesPageState())
+    ..registerLazySingleton<NotesSynchronizator>(
+        () => NotesSynchronizator(getIt<ApiService>(), getIt<NoteRepository>()))
+    ..registerLazySingleton<LoggedMessageHandler>(
+        () => LoggedMessageHandler(getIt<ApiSettings>(), getIt<ApiService>()))
+    ..registerLazySingleton<MessageBus>(() => MessageBus());
 }

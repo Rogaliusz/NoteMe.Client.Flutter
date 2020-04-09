@@ -20,8 +20,8 @@ class MainSynchronizator {
     if (synchros.length == 0) {
       var synchro = new Synchronization(
           id: 'main',
-          lastSynchronization: DateTime.now().toUtc(),
-          statusSynchronization: SynchronizationStatusEnum.Ok);
+          lastSynchronization: DateTime.fromMillisecondsSinceEpoch(1).toUtc(),
+          statusSynchronization: SynchronizationStatusWrapper.ok);
 
       await _repository.insert(synchro);
       synchros = await _repository.fetch();

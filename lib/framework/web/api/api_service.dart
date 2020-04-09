@@ -9,6 +9,7 @@ import 'package:noteme/framework/web/api/responses/api_response.dart';
 import 'api_settings.dart';
 
 @injectable
+@lazySingleton
 class ApiService {
   final ApiSettings settings;
   final http.Client _client = http.Client();
@@ -19,7 +20,7 @@ class ApiService {
   }
 
   setToken(String value) {
-    _headers[HttpHeaders.authorizationHeader] = 'Bearer "$value"';
+    _headers[HttpHeaders.authorizationHeader] = 'Bearer $value';
   }
 
   Future<ApiResponse> post(String endpoint, dynamic body) async {
@@ -41,7 +42,8 @@ class ApiService {
   }
 
   Future<ApiResponse> get(String endpoint) async {
-    var response = await _client.get(getUrl(endpoint), headers: _headers);
+    var url = getUrl(endpoint);
+    var response = await _client.get(url, headers: _headers);
 
     return new ApiResponse(
         json.decode(response.body), response.body, response.statusCode);

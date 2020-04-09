@@ -3,7 +3,7 @@ import 'package:noteme/framework/synchronizators/models/synchronization_model.da
 
 abstract class SynchonizationProvider implements IdProvider {
   DateTime lastSynchronization;
-  SynchronizationStatusEnum statusSynchronization;
+  int statusSynchronization;
 
   Map<String, dynamic> toJson();
 }
@@ -14,6 +14,14 @@ enum SynchronizationStatusEnum {
   NeedUpdate,
   NeedDelete,
   NeedUpload,
+}
+
+class SynchronizationStatusWrapper {
+  static int ok = 0;
+  static int needInsert = 1;
+  static int needUpdate = 2;
+  static int needDelete = 3;
+  static int needUpload = 4;
 }
 
 abstract class SynchronizationHandlerBase<

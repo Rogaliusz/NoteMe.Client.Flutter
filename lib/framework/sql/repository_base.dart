@@ -40,6 +40,10 @@ abstract class RepositoryBase<TModel extends SynchonizationProvider> {
     final List<Map<String, dynamic>> maps =
         await db.query(table, where: "id = ?", whereArgs: [id]);
 
+    if (maps.length == 0) {
+      return null;
+    }
+
     final map = maps[0];
     return createFromMap(map);
   }

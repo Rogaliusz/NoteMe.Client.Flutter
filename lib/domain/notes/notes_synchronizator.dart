@@ -28,7 +28,7 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
     do {
       var filterBy = "CreatedAt > \"$syncDate\"";
       var orderBy = "CreatedAt-desc";
-      var query = new CollectionQuery(where: filterBy, orderBy: orderBy);
+      var query = new CollectionQuery(orderBy: orderBy, where: filterBy);
       var response = await _apiService.get(NotesEndpoint + query.toUri());
 
       if (!response.isCorrect) {
@@ -48,11 +48,11 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
         if (note != null) continue;
 
-        if (note.status == StatusEnum.Normal) {
+        if (noteDto.status == StatusWrapper.normal) {
           allNotes.add(note);
         }
 
-        await _noteRepository.insert(note);
+        await _noteRepository.insert(noteDto);
       }
     } while (hasMore);
   }
