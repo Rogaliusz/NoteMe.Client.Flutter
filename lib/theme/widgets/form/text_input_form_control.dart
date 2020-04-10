@@ -9,6 +9,7 @@ class TextNoteMeInputFormControl extends StatelessWidget {
   FormFieldSetter<String> onSaved;
   TextInputType keyboardType;
   bool obscureText;
+  TextEditingController controller;
 
   TextNoteMeInputFormControl(
       {this.placeholder,
@@ -17,17 +18,20 @@ class TextNoteMeInputFormControl extends StatelessWidget {
       this.initialValue,
       this.validator,
       this.onSaved,
-      this.obscureText}) {}
+      this.obscureText,
+      this.controller}) {}
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        key: this.key,
-        decoration: InputDecoration(labelText: this.placeholder),
-        initialValue: this.initialValue,
-        onSaved: this.onSaved,
-        keyboardType: this.keyboardType,
-        obscureText: this.obscureText ?? false,
-        validator: this.validator);
+      key: this.key,
+      decoration: InputDecoration(labelText: this.placeholder),
+      initialValue: this.initialValue,
+      onSaved: this.onSaved,
+      keyboardType: this.keyboardType,
+      obscureText: this.obscureText ?? false,
+      validator: this.validator,
+      controller: this.controller,
+    );
   }
 }

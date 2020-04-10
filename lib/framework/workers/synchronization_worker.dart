@@ -17,19 +17,19 @@ class SynchronizationWorker {
 
   static bool get started => _isolate != null;
 
-  static start() async {
+  static Future<void> start() async {
     if (started) {
       return;
     }
 
-    startTimer();
+    await startTimer();
   }
 
   static void _runTimer(SendPort sendPort) async {
     startTimer();
   }
 
-  static void startTimer() async {
+  static Future<void> startTimer() async {
     await _synchro();
     _timer = Timer.periodic(new Duration(seconds: 60), (Timer t) async {
       await _synchro();

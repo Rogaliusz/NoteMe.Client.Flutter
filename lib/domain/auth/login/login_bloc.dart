@@ -1,57 +1,41 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:noteme/domain/auth/login/events/login_event.dart';
+import 'package:meta/meta.dart';
+import 'package:bloc/bloc.dart';
+import 'package:noteme/domain/auth/authentication/authentication_bloc.dart';
+import 'package:noteme/domain/auth/authentication/authentication_event.dart';
 import 'package:noteme/domain/auth/login/models/jwt_model.dart';
-import 'package:noteme/domain/auth/login/states/logged_state.dart';
-import 'package:noteme/domain/auth/messages/logged_message.dart';
-import 'package:noteme/framework/bloc/bloc_provider.dart';
-import 'package:noteme/framework/messages/message_bus.dart';
+import 'package:noteme/domain/auth/login/states/login_state.dart';
 import 'package:noteme/framework/web/api/api_endpoints.dart';
 import 'package:noteme/framework/web/api/api_service.dart';
-import 'package:noteme/framework/web/api/api_settings.dart';
-import 'package:noteme/theme/services/loader_service.dart';
+
+import 'events/login_event.dart';
 
 @injectable
-class LoginBloc implements NoteMeBloc {
-  final _loginStateController = new StreamController<LoginEvent>();
-  final _loggedStateController = new StreamController<LoggedState>();
-
-  final LoaderService _loaderService;
-  final ApiSettings _apiSettings;
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiService _apiService;
-  final MessageBus _messageBus;
+  final AuthenticationBloc _authenticationBloc;
 
-  StreamSink<LoginEvent> get login => _loginStateController.sink;
-  Stream<LoggedState> get logged => _loggedStateController.stream;
+  LoginBloc(this._apiService, this._authenticationBloc);
 
-  LoginBloc(this._loaderService, this._apiSettings, this._apiService,
-      this._messageBus) {
-    _loginStateController.stream.listen(onData);
-  }
-
-  void onData(LoginEvent event) async {
-    var json = event.toJson();
-
-    _loaderService.setOperation(true);
-    var response = await _apiService.post(LoginEndpoint, json);
-    _loaderService.setOperation(false);
-
-    if (response.isCorrect) {
-      var jwt = Jwt.fromJson(response.json);
-
-      _apiSettings.loggedUser = jwt;
-      await _messageBus.publish(new LoggedMessage());
-
-      _loggedStateController.add(new LoginOkState(jwt));
-    } else {
-      _loggedStateController.add(new LoginErrorState(response.body));
-    }
-  }
+  LoginState get initialState => LoginInitial();
 
   @override
-  dispose() {
-    _loginStateController.close();
-    _loggedStateController.close();
+  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    if (event is LoginButtonPressed) {
+      yield LoginLoading();
+
+      try {
+        final response = await _apiService.post(LoginEndpoint, event);
+        final user = Jwt.fromJson(response.json);
+
+        _authenticationBloc.add(LoggedIn(user));
+
+        yield LoginInitial();
+      } catch (error) {
+        yield LoginFailure(error: error.toString());
+      }
+    }
   }
 }
