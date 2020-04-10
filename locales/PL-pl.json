@@ -1,12 +1,19 @@
 {
+  "drawer": {},
   "global": {
     "password": "Hasło",
     "email": "Email",
     "login": "Zaloguj",
-    "sign_up": "Zarejestruj"
+    "sign_up": "Zarejestruj",
+    "add": "Dodaj",
+    "logout": "Wyloguj",
+    "welcome": "Witaj"
   },
   "login": {
     "invalid": "Niepoprawne dane do zalogowania, spróbuj ponownie."
+  },
+  "notes": {
+    "title": "Notatki"
   },
   "validators": {
     "required": "Pole jest wymagane",

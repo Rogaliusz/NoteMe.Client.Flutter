@@ -1,12 +1,19 @@
 {
+  "drawer": {},
   "global": {
     "password": "Password",
     "email": "Email",
     "login": "Login",
-    "sign_up": "Sign up"
+    "sign_up": "Sign up",
+    "add": "Add",
+    "logout": "Logout",
+    "welcome": "Welcome"
   },
   "login": {
     "invalid": "Invalid credentials, please try again"
+  },
+  "notes": {
+    "title": "Notes"
   },
   "validators": {
     "required": "Is required",

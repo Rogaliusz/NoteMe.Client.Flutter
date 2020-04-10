@@ -17,20 +17,32 @@ class LocaleBase {
 
   String getPath() => _path;
 
+  Localedrawer _drawer;
+  Localedrawer get drawer => _drawer;
   Localeglobal _global;
   Localeglobal get global => _global;
   Localelogin _login;
   Localelogin get login => _login;
+  Localenotes _notes;
+  Localenotes get notes => _notes;
   Localevalidators _validators;
   Localevalidators get validators => _validators;
 
   void initAll() {
+    _drawer = Localedrawer(Map<String, String>.from(_data['drawer']));
     _global = Localeglobal(Map<String, String>.from(_data['global']));
     _login = Localelogin(Map<String, String>.from(_data['login']));
+    _notes = Localenotes(Map<String, String>.from(_data['notes']));
     _validators = Localevalidators(Map<String, String>.from(_data['validators']));
   }
 }
 
+class Localedrawer {
+  final Map<String, String> _data;
+  Localedrawer(this._data);
+
+  
+}
 class Localeglobal {
   final Map<String, String> _data;
   Localeglobal(this._data);
@@ -39,6 +51,9 @@ class Localeglobal {
   String get email => _data["email"];
   String get login => _data["login"];
   String get sign_up => _data["sign_up"];
+  String get add => _data["add"];
+  String get logout => _data["logout"];
+  String get welcome => _data["welcome"];
 }
 class Localelogin {
   final Map<String, String> _data;
@@ -47,6 +62,12 @@ class Localelogin {
   String get login => _data["login"];
   String get password => _data["password"];
   String get invalid => _data["invalid"];
+}
+class Localenotes {
+  final Map<String, String> _data;
+  Localenotes(this._data);
+
+  String get title => _data["title"];
 }
 class Localevalidators {
   final Map<String, String> _data;

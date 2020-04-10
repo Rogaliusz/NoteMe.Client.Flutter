@@ -53,6 +53,7 @@ class NoteMeApp extends StatelessWidget {
         const Locale('pl'),
       ],
       theme: ThemeData(
+          canvasColor: backgroundNoteMeColor,
           primaryColor: primaryNoteMeColor,
           accentColor: accentNoteMeColor,
           errorColor: errorNoteMeColor),
