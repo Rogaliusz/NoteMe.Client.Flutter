@@ -55,6 +55,7 @@ class Localeglobal {
   String get logout => _data["logout"];
   String get welcome => _data["welcome"];
   String get create => _data["create"];
+  String get update => _data["update"];
 }
 class Localelogin {
   final Map<String, String> _data;

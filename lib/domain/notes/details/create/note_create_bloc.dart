@@ -6,14 +6,16 @@ import 'package:noteme/domain/notes/details/create/note_create_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_state.dart';
 import 'package:noteme/domain/notes/models/notes_model.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
+import 'package:noteme/framework/hardware/location/location_service.dart';
 import 'package:noteme/framework/synchronizators/synchornization_provider.dart';
 import 'package:uuid/uuid.dart';
 
 @injectable
 class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
   final NoteRepository _repository;
+  final LocationService _locationService;
 
-  NoteCreateBloc(this._repository);
+  NoteCreateBloc(this._repository, this._locationService);
 
   @override
   NoteCreateState get initialState => NoteCreateInitializedState();
@@ -31,6 +33,10 @@ class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
         note.content = event.content;
         note.createdAt = DateTime.now().toUtc();
         note.statusSynchronization = SynchronizationStatusWrapper.needInsert;
+
+        final pos = await _locationService.getCurrentPostition();
+        note.latitude = pos.latitude;
+        note.longitude = pos.longitude;
 
         await _repository.insert(note);
 

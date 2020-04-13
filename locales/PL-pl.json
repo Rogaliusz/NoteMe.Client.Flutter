@@ -8,7 +8,8 @@
     "add": "Dodaj",
     "logout": "Wyloguj",
     "welcome": "Witaj",
-    "create": "Stwórz"
+    "create": "Stwórz",
+    "update": "Zaaktualizuj"
   },
   "login": {
     "invalid": "Niepoprawne dane do zalogowania, spróbuj ponownie."

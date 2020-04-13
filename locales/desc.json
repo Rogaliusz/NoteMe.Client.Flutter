@@ -8,7 +8,8 @@
     "add": "add",
     "logout": "Logout",
     "welcome": "Welcome",
-    "create": "Create"
+    "create": "Create",
+    "update": "Update"
   },
   "login": {
     "login": "Login",

@@ -188,6 +188,10 @@ class NoteForm extends StatelessWidget {
 
   _openCamera(BuildContext context) async {
     final file = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (file == null) {
+      return;
+    }
+
     attachments.add(file.path);
 
     BlocProvider.of<NoteFormBloc>(context)

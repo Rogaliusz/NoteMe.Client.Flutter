@@ -8,7 +8,8 @@
     "add": "Add",
     "logout": "Logout",
     "welcome": "Welcome",
-    "create": "Create"
+    "create": "Create",
+    "update": "Update"
   },
   "login": {
     "invalid": "Invalid credentials, please try again"

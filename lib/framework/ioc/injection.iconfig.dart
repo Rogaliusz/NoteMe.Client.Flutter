@@ -9,6 +9,9 @@ import 'package:noteme/framework/sql/database_factory.dart';
 import 'package:noteme/framework/synchronizators/synchronization.dart';
 import 'package:noteme/domain/notes/notes_synchronizator.dart';
 import 'package:noteme/framework/messages/message_bus.dart';
+import 'package:noteme/framework/hardware/camera/camera_service.dart';
+import 'package:noteme/framework/hardware/camera/camera_screen.dart';
+import 'package:noteme/framework/hardware/location/location_service.dart';
 import 'package:noteme/framework/web/api/api_service.dart';
 import 'package:noteme/framework/web/api/api_settings.dart';
 import 'package:noteme/framework/workers/synchronization_worker.dart';
@@ -25,12 +28,13 @@ import 'package:noteme/domain/auth/login/login_bloc.dart';
 import 'package:noteme/domain/auth/login/login_view.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
 import 'package:noteme/domain/notes/notes_drawer.dart';
+import 'package:noteme/domain/notes/details/form/note_form_bloc.dart';
 import 'package:noteme/domain/notes/details/create/note_create_page.dart';
 import 'package:noteme/domain/notes/details/create/note_create_bloc.dart';
 import 'package:noteme/domain/notes/notes_view.dart';
 import 'package:noteme/domain/notes/bloc/notes_bloc.dart';
-import 'package:noteme/domain/notes/details/form/note_form_bloc.dart';
-import 'package:noteme/framework/hardware/camera/camera_service.dart';
+import 'package:noteme/domain/notes/details/update/note_update.dart';
+import 'package:noteme/domain/notes/details/update/note_update_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -41,6 +45,9 @@ void $initGetIt({String environment}) {
     ..registerFactory<MainSynchronizator>(() => MainSynchronizator(
         getIt<SynchronizationRepository>(), getIt<NotesSynchronizator>()))
     ..registerLazySingleton<MessageBus>(() => MessageBus())
+    ..registerLazySingleton<CameraService>(() => CameraService())
+    ..registerFactory<CameraScreen>(() => CameraScreen())
+    ..registerLazySingleton<LocationService>(() => LocationService())
     ..registerLazySingleton<ApiService>(() => ApiService(getIt<ApiSettings>()))
     ..registerLazySingleton<ApiSettings>(() => ApiSettings())
     ..registerLazySingleton<SynchronizationWorker>(
@@ -64,15 +71,18 @@ void $initGetIt({String environment}) {
     ..registerLazySingleton<NoteRepository>(
         () => NoteRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<NotesDrawer>(() => NotesDrawer(getIt<ApiSettings>()))
+    ..registerFactory<NoteFormBloc>(() => NoteFormBloc())
     ..registerFactory<NoteCreatePage>(() => NoteCreatePage())
     ..registerFactory<NoteCreatePageState>(() => NoteCreatePageState())
     ..registerFactory<NoteCreateBloc>(
-        () => NoteCreateBloc(getIt<NoteRepository>()))
+        () => NoteCreateBloc(getIt<NoteRepository>(), getIt<LocationService>()))
     ..registerFactory<NotesPage>(() => NotesPage())
     ..registerFactory<NotesPageState>(() => NotesPageState())
     ..registerLazySingleton<NotesSynchronizator>(
         () => NotesSynchronizator(getIt<ApiService>(), getIt<NoteRepository>()))
     ..registerFactory<NotesBloc>(() => NotesBloc(getIt<NoteRepository>()))
-    ..registerFactory<NoteFormBloc>(() => NoteFormBloc())
-    ..registerLazySingleton<CameraService>(() => CameraService());
+    ..registerFactory<NoteUpdatePage>(() => NoteUpdatePage())
+    ..registerFactory<NoteUpdatePageState>(() => NoteUpdatePageState())
+    ..registerFactory<NoteUpdateBloc>(
+        () => NoteUpdateBloc(getIt<NoteRepository>()));
 }

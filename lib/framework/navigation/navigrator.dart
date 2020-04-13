@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
 
 class NoteMeNavigator {
-  static push<T extends Widget>(BuildContext context) {
+  static push<T extends Widget>(BuildContext context,
+      {RouteSettings settings}) {
     return Navigator.push(
-        context, MaterialPageRoute(builder: (context) => getIt<T>()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => getIt<T>(), settings: settings));
   }
 
   static pop<TResult>(BuildContext context, {TResult result}) {
