@@ -7,7 +7,8 @@
     "sign_up": "Sign up",
     "add": "add",
     "logout": "Logout",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "create": "Create"
   },
   "login": {
     "login": "Login",
@@ -15,7 +16,9 @@
     "invalid": "Invalid credentials"
   },
   "notes": {
-    "title": "Notes"
+    "title": "Notes",
+    "tags": "tags",
+    "content": "Content"
   },
   "validators": {
     "required": "Required",

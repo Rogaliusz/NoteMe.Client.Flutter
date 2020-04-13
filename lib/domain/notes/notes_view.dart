@@ -30,6 +30,12 @@ class NotesPageState extends State<NotesPage> {
   NotesPageState();
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locale = NoteMeLocaleFactory.of(context);
 
@@ -66,7 +72,14 @@ class NoteItem extends StatelessWidget {
     final format = DateFormat("yyyy-MM-dd");
 
     return Container(
-        color: backgroundNoteMeColor,
+        decoration: BoxDecoration(
+            color: backgroundNoteMeColor,
+            borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0),
+              bottomLeft: const Radius.circular(10.0),
+              bottomRight: const Radius.circular(10.0),
+            )),
         margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
         alignment: Alignment.centerLeft,
         child: Row(
@@ -102,7 +115,5 @@ class NoteItem extends StatelessWidget {
                 ])
           ],
         ));
-
-    Text(this._item.name);
   }
 }

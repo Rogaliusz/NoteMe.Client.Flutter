@@ -16,7 +16,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   @override
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
-    if (event is NotesInitializeEvent) {
+    if (event is NotesInitializeEvent || event is NotesFetchedState) {
       yield NotesLoadingState();
       final notes = await _repository.fetch()
         ..sort((x, y) =>

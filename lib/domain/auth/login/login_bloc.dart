@@ -28,11 +28,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         final response = await _apiService.post(LoginEndpoint, event);
+        if (!response.isCorrect) {
+          yield LoginFailure(error: response.body.toString());
+          return;
+        }
         final user = Jwt.fromJson(response.json);
 
         _authenticationBloc.add(LoggedIn(user));
 
-        yield LoginInitial();
+        yield LoginSuccess();
       } catch (error) {
         yield LoginFailure(error: error.toString());
       }

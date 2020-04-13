@@ -17,7 +17,9 @@ class ApiSettings {
     }
 
     var jsonSerialized = _sharedPreferences.get(_jwtKey) as String;
-    if (jsonSerialized != null && jsonSerialized.isNotEmpty) {
+    if (jsonSerialized != null &&
+        jsonSerialized.isNotEmpty &&
+        !jsonSerialized.contains('"token":null')) {
       _loggedUser = Jwt.fromJson(json.decode(jsonSerialized));
     }
 

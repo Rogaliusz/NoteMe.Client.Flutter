@@ -6,3 +6,5 @@ abstract class NotesEvent extends Equatable {
 }
 
 class NotesInitializeEvent extends NotesEvent {}
+
+class NotesFetchEvent extends NotesEvent {}

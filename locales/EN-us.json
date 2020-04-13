@@ -7,13 +7,16 @@
     "sign_up": "Sign up",
     "add": "Add",
     "logout": "Logout",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "create": "Create"
   },
   "login": {
     "invalid": "Invalid credentials, please try again"
   },
   "notes": {
-    "title": "Notes"
+    "title": "Notes",
+    "tags": "Tags",
+    "content": "Content"
   },
   "validators": {
     "required": "Is required",

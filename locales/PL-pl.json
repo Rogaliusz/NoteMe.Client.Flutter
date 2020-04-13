@@ -7,13 +7,16 @@
     "sign_up": "Zarejestruj",
     "add": "Dodaj",
     "logout": "Wyloguj",
-    "welcome": "Witaj"
+    "welcome": "Witaj",
+    "create": "Stwórz"
   },
   "login": {
     "invalid": "Niepoprawne dane do zalogowania, spróbuj ponownie."
   },
   "notes": {
-    "title": "Notatki"
+    "title": "Notatki",
+    "tags": "Tags",
+    "content": "Kontent"
   },
   "validators": {
     "required": "Pole jest wymagane",

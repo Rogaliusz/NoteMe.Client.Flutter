@@ -54,6 +54,7 @@ class Localeglobal {
   String get add => _data["add"];
   String get logout => _data["logout"];
   String get welcome => _data["welcome"];
+  String get create => _data["create"];
 }
 class Localelogin {
   final Map<String, String> _data;
@@ -68,6 +69,8 @@ class Localenotes {
   Localenotes(this._data);
 
   String get title => _data["title"];
+  String get tags => _data["tags"];
+  String get content => _data["content"];
 }
 class Localevalidators {
   final Map<String, String> _data;

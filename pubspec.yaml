@@ -34,6 +34,9 @@ dependencies:
   flutter_bloc: ^3.2.0
   equatable: ^1.1.0
   intl: 0.16.0
+  uuid: 2.0.4
+  image_picker:
+  camera:
 
   flutter_localizations:
     sdk: flutter

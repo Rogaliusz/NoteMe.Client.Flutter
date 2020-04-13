@@ -22,6 +22,7 @@ import 'domain/auth/authentication/authentication_bloc.dart';
 import 'domain/auth/authentication/authentication_event.dart';
 import 'domain/auth/authentication/authentication_state.dart';
 import 'domain/auth/messages/logged_message.dart';
+import 'domain/notes/details/create/note_create_page.dart';
 import 'framework/ioc/injection.dart';
 import 'main_init.dart';
 
@@ -53,6 +54,10 @@ class NoteMeApp extends StatelessWidget {
         const Locale('pl'),
       ],
       theme: ThemeData(
+          primaryIconTheme: IconThemeData(color: primaryNoteMeColor),
+          primarySwatch: accentMaterialColor,
+          primaryTextTheme:
+              TextTheme(title: TextStyle(color: primaryNoteMeColor)),
           canvasColor: backgroundNoteMeColor,
           primaryColor: primaryNoteMeColor,
           accentColor: accentNoteMeColor,
@@ -60,16 +65,16 @@ class NoteMeApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationUninitialized) {
-            return SplashPage();
+            return getIt<SplashPage>();
           }
           if (state is AuthenticationAuthenticated) {
-            return NotesPage();
+            return getIt<NotesPage>();
           }
           if (state is AuthenticationUnauthenticated) {
-            return LoginPage();
+            return getIt<LoginPage>();
           }
           if (state is AuthenticationLoading) {
-            return LoadingIndicator();
+            return getIt<LoadingIndicator>();
           }
         },
       ),

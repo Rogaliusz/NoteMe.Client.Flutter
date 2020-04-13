@@ -54,40 +54,45 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Form(
-            child: Column(
-              children: [
-                TextNoteMeInputFormControl(
-                  controller: _usernameController,
-                  placeholder: locale.global.email,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (String value) =>
-                      requiredNoteMeValidator(locale, value),
+              key: _key,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                child: Column(
+                  children: [
+                    TextNoteMeInputFormControl(
+                      controller: _usernameController,
+                      placeholder: locale.global.email,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String value) =>
+                          requiredNoteMeValidator(locale, value),
+                    ),
+                    TextNoteMeInputFormControl(
+                        controller: _passwordController,
+                        placeholder: locale.global.password,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true,
+                        validator: (String value) =>
+                            requiredNoteMeValidator(locale, value)),
+                    SizedBox(height: 100),
+                    TextNoteMeButton(
+                        text: locale.global.login,
+                        onPressed: state is! LoginLoading
+                            ? _onLoginButtonPressed
+                            : null),
+                    SizedBox(height: 20),
+                    TextNoteMeButton(
+                        text: locale.global.sign_up,
+                        onPressed: () {
+                          NoteMeNavigator.push<SignupPage>(context);
+                        }),
+                    Container(
+                      child: state is LoginLoading
+                          ? CircularProgressIndicator()
+                          : null,
+                    ),
+                  ],
                 ),
-                TextNoteMeInputFormControl(
-                    placeholder: locale.global.password,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    validator: (String value) =>
-                        requiredNoteMeValidator(locale, value)),
-                SizedBox(height: 100),
-                TextNoteMeButton(
-                    text: locale.global.login,
-                    onPressed:
-                        state is! LoginLoading ? _onLoginButtonPressed : null),
-                SizedBox(height: 20),
-                TextNoteMeButton(
-                    text: locale.global.sign_up,
-                    onPressed: () {
-                      NoteMeNavigator.push<SignupPage>(context);
-                    }),
-                Container(
-                  child: state is LoginLoading
-                      ? CircularProgressIndicator()
-                      : null,
-                ),
-              ],
-            ),
-          );
+              ));
         },
       ),
     );

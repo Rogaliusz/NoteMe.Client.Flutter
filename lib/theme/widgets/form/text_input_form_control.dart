@@ -10,6 +10,8 @@ class TextNoteMeInputFormControl extends StatelessWidget {
   TextInputType keyboardType;
   bool obscureText;
   TextEditingController controller;
+  int minLines;
+  int maxLines;
 
   TextNoteMeInputFormControl(
       {this.placeholder,
@@ -18,8 +20,10 @@ class TextNoteMeInputFormControl extends StatelessWidget {
       this.initialValue,
       this.validator,
       this.onSaved,
-      this.obscureText,
-      this.controller}) {}
+      this.obscureText = false,
+      this.controller,
+      this.minLines,
+      this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +33,11 @@ class TextNoteMeInputFormControl extends StatelessWidget {
       initialValue: this.initialValue,
       onSaved: this.onSaved,
       keyboardType: this.keyboardType,
-      obscureText: this.obscureText ?? false,
+      obscureText: this.obscureText,
       validator: this.validator,
       controller: this.controller,
+      maxLines: this.maxLines,
+      minLines: this.minLines,
     );
   }
 }
