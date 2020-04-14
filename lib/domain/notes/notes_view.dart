@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:noteme/domain/auth/authentication/authentication_bloc.dart';
 import 'package:noteme/domain/notes/bloc/notes_event.dart';
 import 'package:noteme/domain/notes/details/update/note_update.dart';
 import 'package:noteme/domain/notes/notes_drawer.dart';
+import 'package:noteme/domain/notes/notes_message.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/navigation/navigrator.dart';
 
 import 'package:noteme/theme/backgrounds/logged_background.dart';
@@ -29,7 +32,9 @@ class NotesPage extends StatefulWidget {
 
 @injectable
 class NotesPageState extends State<NotesPage> {
-  NotesPageState();
+  final MessageBus _bus;
+
+  NotesPageState(this._bus);
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,10 @@ class NotesPageState extends State<NotesPage> {
           return getIt<NotesBloc>()..add(NotesInitializeEvent());
         }, child: LoggedBackgroundBox(child:
             BlocBuilder<NotesBloc, NotesState>(builder: (context, state) {
+          _bus.subscribe<NotesRetriveredMessage>((x) {
+            BlocProvider.of<NotesBloc>(context).add(NotesFetchEvent());
+          });
+
           if (state is NotesFetchedState) {
             final items = state.items;
             return ListView.builder(

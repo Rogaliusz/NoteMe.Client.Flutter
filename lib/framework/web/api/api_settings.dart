@@ -29,6 +29,11 @@ class ApiSettings {
   set loggedUser(Jwt value) {
     _loggedUser = value;
 
+    if (value == null) {
+      _sharedPreferences.clear();
+      return;
+    }
+
     var jsonSerialized = json.encode(value.toJson());
     _sharedPreferences.setString(_jwtKey, jsonSerialized);
   }

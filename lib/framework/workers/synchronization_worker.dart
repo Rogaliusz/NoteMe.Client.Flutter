@@ -15,7 +15,7 @@ class SynchronizationWorker {
   static Isolate _isolate;
   static Timer _timer;
 
-  static bool get started => _isolate != null;
+  static bool get started => _timer?.isActive == true;
 
   static Future<void> start() async {
     if (started) {
@@ -23,6 +23,14 @@ class SynchronizationWorker {
     }
 
     await startTimer();
+  }
+
+  static Future<void> stop() async {
+    if (!started) {
+      return;
+    }
+
+    _timer.cancel();
   }
 
   static void _runTimer(SendPort sendPort) async {

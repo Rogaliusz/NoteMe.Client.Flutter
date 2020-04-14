@@ -8,6 +8,7 @@ import 'package:noteme/framework/messages/message_model.dart';
 @injectable
 class MessageBus {
   final handlers = new Map<Type, List<MessageHandler>>();
+  final subscriptions = new Map<Type, List<Function>>();
 
   MessageBus();
 
@@ -20,6 +21,22 @@ class MessageBus {
     for (final handler in messageHandlers) {
       await handler.handle(message);
     }
+
+    var subs = subscriptions[TMessage];
+    if (subs == null || subs.length == 0) {
+      return;
+    }
+    for (final sub in subs) {
+      sub(message);
+    }
+  }
+
+  subscribe<TMessage extends Message>(Function onHandle) {
+    if (!handlers.containsKey(TMessage)) {
+      subscriptions[TMessage] = new List<Function>();
+    }
+
+    subscriptions[TMessage].add(onHandle);
   }
 
   registerHandlers() {

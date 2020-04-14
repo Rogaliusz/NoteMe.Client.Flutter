@@ -57,5 +57,10 @@ abstract class RepositoryBase<TModel extends SynchonizationProvider> {
     });
   }
 
+  Future clear() async {
+    final Database db = await _databaseFactory.create();
+    await db.delete(table);
+  }
+
   TModel createFromMap(Map<String, dynamic> map);
 }

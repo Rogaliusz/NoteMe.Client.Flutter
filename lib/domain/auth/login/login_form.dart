@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noteme/domain/auth/authentication/authentication_bloc.dart';
+import 'package:noteme/domain/auth/authentication/authentication_event.dart';
 import 'package:noteme/domain/auth/login/states/login_state.dart';
 import 'package:noteme/domain/auth/signup/signup_view.dart';
 import 'package:noteme/framework/navigation/navigrator.dart';
@@ -53,6 +55,11 @@ class _LoginFormState extends State<LoginForm> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
+          if (state is LoginSuccess) {
+            BlocProvider.of<AuthenticationBloc>(context)
+                .add(LoggedIn(state.user));
+          }
+
           return Form(
               key: _key,
               child: Padding(

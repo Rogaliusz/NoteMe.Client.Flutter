@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:noteme/domain/auth/authentication/authentication_bloc.dart';
+import 'package:noteme/domain/auth/authentication/authentication_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_page.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
 import 'package:noteme/framework/navigation/navigrator.dart';
@@ -37,10 +40,12 @@ class NotesDrawer extends StatelessWidget {
                 NoteMeNavigator.push<NoteCreatePage>(context);
               }),
           ListTile(
-            leading: PrimaryIcon(Icons.exit_to_app),
-            title: PrimaryText(locale.global.logout, 12),
-            onTap: () => Navigator.of(context).pop(),
-          ),
+              leading: PrimaryIcon(Icons.exit_to_app),
+              title: PrimaryText(locale.global.logout, 12),
+              onTap: () {
+                final bloc = BlocProvider.of<AuthenticationBloc>(context);
+                bloc.add(LoggedOut());
+              }),
         ],
       ),
     );

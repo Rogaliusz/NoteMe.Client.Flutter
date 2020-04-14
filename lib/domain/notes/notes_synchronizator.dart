@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:noteme/domain/common/status_enum.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/synchronizators/models/synchronization_model.dart';
 import 'package:noteme/framework/synchronizators/synchornization_provider.dart';
 import 'package:noteme/framework/synchronizators/synchronization.dart';
@@ -10,14 +11,16 @@ import 'package:noteme/framework/web/api/responses/api_collection_response.dart'
 import 'package:noteme/framework/web/collection_query.dart';
 
 import 'models/notes_model.dart';
+import 'notes_message.dart';
 
 @lazySingleton
 @injectable
 class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
   final ApiService _apiService;
   final NoteRepository _noteRepository;
+  final MessageBus _bus;
 
-  NotesSynchronizator(this._apiService, this._noteRepository);
+  NotesSynchronizator(this._bus, this._apiService, this._noteRepository);
 
   @override
   Future<void> syncIt(Synchronization synchronization) async {
@@ -54,6 +57,8 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
         await _noteRepository.insert(noteDto);
       }
+
+      _bus.publish(NotesRetriveredMessage());
     } while (hasMore);
   }
 }

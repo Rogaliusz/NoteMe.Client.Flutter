@@ -34,9 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
         final user = Jwt.fromJson(response.json);
 
-        _authenticationBloc.add(LoggedIn(user));
-
-        yield LoginSuccess();
+        yield LoginSuccess(user);
       } catch (error) {
         yield LoginFailure(error: error.toString());
       }
