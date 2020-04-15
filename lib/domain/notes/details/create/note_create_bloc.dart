@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:noteme/domain/common/status_enum.dart';
+import 'package:noteme/domain/notes/attachments/attachment_repository.dart';
 import 'package:noteme/domain/notes/details/create/note_create_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_state.dart';
 import 'package:noteme/domain/notes/models/notes_model.dart';
@@ -15,8 +16,10 @@ import 'package:uuid/uuid.dart';
 class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
   final NoteRepository _repository;
   final LocationService _locationService;
+  final AttachmentRepository _attachmentRepository;
 
-  NoteCreateBloc(this._repository, this._locationService);
+  NoteCreateBloc(
+      this._repository, this._locationService, this._attachmentRepository);
 
   @override
   NoteCreateState get initialState => NoteCreateInitializedState();
@@ -41,6 +44,11 @@ class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
         note.longitude = pos.longitude;
 
         await _repository.insert(note);
+
+        for (final attachment in event.attachments) {
+          attachment.noteId = note.id;
+          await _attachmentRepository.insert(attachment);
+        }
 
         yield NoteCreatedState();
       } catch (ex) {

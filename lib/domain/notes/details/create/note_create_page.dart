@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:noteme/domain/notes/attachments/models/attachment_model.dart';
 import 'package:noteme/domain/notes/bloc/notes_bloc.dart';
 import 'package:noteme/domain/notes/bloc/notes_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_bloc.dart';
@@ -34,7 +35,7 @@ class NoteCreatePageState extends State<NoteCreatePage> {
   final TextEditingController tagsController = new TextEditingController();
   final TextEditingController contentController = new TextEditingController();
   final GlobalKey<FormState> key = new GlobalKey<FormState>();
-  final List<String> attachments = new List<String>();
+  final List<Attachment> attachments = new List<Attachment>();
   final MessageBus _bus;
 
   NoteCreatePageState(this._bus);
@@ -78,8 +79,11 @@ class NoteCreatePageState extends State<NoteCreatePage> {
                       return;
                     }
 
-                    final event = NoteCreateEvent(titleController.text,
-                        tagsController.text, contentController.text);
+                    final event = NoteCreateEvent(
+                        titleController.text,
+                        tagsController.text,
+                        contentController.text,
+                        attachments);
 
                     BlocProvider.of<NoteCreateBloc>(context).add(event);
                   },

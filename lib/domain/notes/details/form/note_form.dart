@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:noteme/domain/notes/attachments/models/attachment_model.dart';
 import 'package:noteme/domain/notes/details/form/note_form_event.dart';
 import 'package:noteme/framework/hardware/camera/camera_screen.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
@@ -13,6 +14,8 @@ import 'package:noteme/theme/colors.dart';
 import 'package:noteme/theme/widgets/form/text_input_form_control.dart';
 import 'package:noteme/theme/widgets/form/validators/required_validator.dart';
 import 'package:noteme/theme/widgets/text_primary.dart';
+import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 
 import 'note_form_bloc.dart';
 import 'note_form_state.dart';
@@ -21,7 +24,7 @@ class NoteForm extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController tagsController;
   final TextEditingController contentController;
-  final List<String> attachments;
+  final List<Attachment> attachments;
 
   const NoteForm(
       {Key key,
@@ -124,7 +127,7 @@ class NoteForm extends StatelessWidget {
 
   _openAttachment(int idx, BuildContext context) {
     final attachment = attachments[idx];
-    final file = File(attachment);
+    final file = File(attachment.path);
 
     showDialog(
         context: context,
@@ -192,9 +195,14 @@ class NoteForm extends StatelessWidget {
       return;
     }
 
-    attachments.add(file.path);
+    final attachment = Attachment();
+    attachment.id = Uuid().v1();
+    attachment.path = file.path;
+    attachment.name = basename(file.path);
+
+    attachments.add(attachment);
 
     BlocProvider.of<NoteFormBloc>(context)
-        .add(NoteFormAddedAttachmentEvent(file.path, attachments));
+        .add(NoteFormAddedAttachmentEvent(attachment, attachments));
   }
 }

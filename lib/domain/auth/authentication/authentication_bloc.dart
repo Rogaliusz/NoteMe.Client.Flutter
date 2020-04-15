@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/synchronizators/synchronization_repository.dart';
 import 'package:noteme/framework/web/api/api_service.dart';
 import 'package:noteme/framework/web/api/api_settings.dart';
@@ -16,9 +17,10 @@ class AuthenticationBloc
   final ApiSettings _apiSettings;
   final NoteRepository _noteRepository;
   final SynchronizationRepository _synchronizationRepository;
+  final MessageBus _messageBus;
 
   AuthenticationBloc(this._apiService, this._apiSettings, this._noteRepository,
-      this._synchronizationRepository);
+      this._synchronizationRepository, this._messageBus);
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -52,6 +54,7 @@ class AuthenticationBloc
       await SynchronizationWorker.stop();
       await _noteRepository.clear();
       await _synchronizationRepository.clear();
+      _messageBus.clear();
       yield AuthenticationUnauthenticated();
     }
   }

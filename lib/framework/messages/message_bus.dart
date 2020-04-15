@@ -34,7 +34,11 @@ class MessageBus {
       return;
     }
     for (final sub in subs) {
-      sub(message);
+      try {
+        sub(message);
+      } catch (ex) {
+        print(ex);
+      }
     }
   }
 
@@ -48,6 +52,11 @@ class MessageBus {
 
   registerHandlers() {
     _registerHandler<LoggedMessageHandler, LoggedMessage>();
+  }
+
+  clear() {
+    handlers.clear();
+    subscriptions.clear();
   }
 
   _registerHandler<THandler extends MessageHandler<TMessage>,

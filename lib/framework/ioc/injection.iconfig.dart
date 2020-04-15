@@ -31,10 +31,11 @@ import 'package:noteme/domain/notes/notes_drawer.dart';
 import 'package:noteme/domain/notes/details/form/note_form_bloc.dart';
 import 'package:noteme/domain/notes/details/create/note_create_page.dart';
 import 'package:noteme/domain/notes/details/create/note_create_bloc.dart';
+import 'package:noteme/domain/notes/attachments/attachment_repository.dart';
 import 'package:noteme/domain/notes/notes_view.dart';
 import 'package:noteme/domain/notes/bloc/notes_bloc.dart';
-import 'package:noteme/domain/notes/details/update/note_update.dart';
 import 'package:noteme/domain/notes/details/update/note_update_bloc.dart';
+import 'package:noteme/domain/notes/details/update/note_update_page.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -69,6 +70,7 @@ void $initGetIt({String environment}) {
           getIt<ApiSettings>(),
           getIt<NoteRepository>(),
           getIt<SynchronizationRepository>(),
+          getIt<MessageBus>(),
         ))
     ..registerFactory<LoginBloc>(
         () => LoginBloc(getIt<ApiService>(), getIt<AuthenticationBloc>()))
@@ -80,8 +82,11 @@ void $initGetIt({String environment}) {
     ..registerFactory<NoteCreatePage>(() => NoteCreatePage())
     ..registerFactory<NoteCreatePageState>(
         () => NoteCreatePageState(getIt<MessageBus>()))
-    ..registerFactory<NoteCreateBloc>(
-        () => NoteCreateBloc(getIt<NoteRepository>(), getIt<LocationService>()))
+    ..registerFactory<NoteCreateBloc>(() => NoteCreateBloc(
+          getIt<NoteRepository>(),
+          getIt<LocationService>(),
+          getIt<AttachmentRepository>(),
+        ))
     ..registerFactory<NotesPage>(() => NotesPage())
     ..registerFactory<NotesPageState>(() => NotesPageState(getIt<MessageBus>()))
     ..registerLazySingleton<NotesSynchronizator>(() => NotesSynchronizator(
@@ -90,8 +95,11 @@ void $initGetIt({String environment}) {
           getIt<NoteRepository>(),
         ))
     ..registerFactory<NotesBloc>(() => NotesBloc(getIt<NoteRepository>()))
+    ..registerFactory<NoteUpdateBloc>(() =>
+        NoteUpdateBloc(getIt<NoteRepository>(), getIt<AttachmentRepository>()))
+    ..registerLazySingleton<AttachmentRepository>(
+        () => AttachmentRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<NoteUpdatePage>(() => NoteUpdatePage())
-    ..registerFactory<NoteUpdatePageState>(() => NoteUpdatePageState())
-    ..registerFactory<NoteUpdateBloc>(
-        () => NoteUpdateBloc(getIt<NoteRepository>()));
+    ..registerFactory<NoteUpdatePageState>(
+        () => NoteUpdatePageState(getIt<MessageBus>()));
 }

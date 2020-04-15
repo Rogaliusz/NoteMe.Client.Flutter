@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:noteme/domain/auth/authentication/authentication_bloc.dart';
 import 'package:noteme/domain/notes/bloc/notes_event.dart';
-import 'package:noteme/domain/notes/details/update/note_update.dart';
 import 'package:noteme/domain/notes/notes_drawer.dart';
 import 'package:noteme/domain/notes/notes_message.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
@@ -20,6 +19,7 @@ import 'package:noteme/theme/widgets/title_text.dart';
 
 import 'bloc/notes_bloc.dart';
 import 'bloc/notes_state.dart';
+import 'details/update/note_update_page.dart';
 import 'models/notes_model.dart';
 
 @injectable
