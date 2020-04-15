@@ -14,7 +14,9 @@ import 'package:noteme/theme/widgets/text_primary.dart';
 class NotesDrawer extends StatelessWidget {
   final ApiSettings _apiSettings;
 
-  const NotesDrawer(this._apiSettings);
+  BuildContext parnetContext;
+
+  NotesDrawer(this._apiSettings);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,9 @@ class NotesDrawer extends StatelessWidget {
           ),
           ListTile(
             title: PrimaryText(
-                locale.global.welcome + ' ' + _apiSettings.loggedUser.user.name,
+                locale.global.welcome +
+                    ' ' +
+                    _apiSettings.loggedUser.user.email,
                 25),
           ),
           ListTile(

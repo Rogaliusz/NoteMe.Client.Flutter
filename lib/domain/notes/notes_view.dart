@@ -40,31 +40,33 @@ class NotesPageState extends State<NotesPage> {
   Widget build(BuildContext context) {
     final locale = NoteMeLocaleFactory.of(context);
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(locale.notes.title),
-          backgroundColor: accentNoteMeColor,
-        ),
-        drawer: getIt<NotesDrawer>(),
-        body: BlocProvider(create: (context) {
+    return BlocProvider(
+        create: (context) {
           return getIt<NotesBloc>()..add(NotesInitializeEvent());
-        }, child: LoggedBackgroundBox(child:
-            BlocBuilder<NotesBloc, NotesState>(builder: (context, state) {
-          _bus.subscribe<NotesRetriveredMessage>((x) {
-            BlocProvider.of<NotesBloc>(context).add(NotesFetchEvent());
-          });
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(locale.notes.title),
+              backgroundColor: accentNoteMeColor,
+            ),
+            drawer: getIt<NotesDrawer>(),
+            body: LoggedBackgroundBox(child:
+                BlocBuilder<NotesBloc, NotesState>(builder: (context, state) {
+              _bus.subscribe<NotesRetriveredMessage>((x) {
+                BlocProvider.of<NotesBloc>(context).add(NotesFetchEvent());
+              });
 
-          if (state is NotesFetchedState) {
-            final items = state.items;
-            return ListView.builder(
-                itemCount: state.items.length,
-                itemBuilder: (BuildContext ctx, int index) {
-                  return NoteItem(items[index]);
-                });
-          }
+              if (state is NotesFetchedState) {
+                final items = state.items;
+                return ListView.builder(
+                    itemCount: state.items.length,
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return NoteItem(items[index]);
+                    });
+              }
 
-          return LoadingIndicator();
-        }))));
+              return LoadingIndicator();
+            }))));
   }
 }
 

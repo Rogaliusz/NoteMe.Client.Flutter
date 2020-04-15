@@ -24,6 +24,11 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
   @override
   Future<void> syncIt(Synchronization synchronization) async {
+    await fetch(synchronization);
+    await insert(synchronization);
+  }
+
+  Future fetch(Synchronization synchronization) async {
     var syncDate = synchronization.lastSynchronization;
     var hasMore = false;
     var allNotes = new List<Note>();
@@ -60,5 +65,21 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
       _bus.publish(NotesRetriveredMessage());
     } while (hasMore);
+  }
+
+  insert(Synchronization synchronization) async {
+    final all = await _noteRepository.fetch();
+    final toInsert = all
+        .where((x) => x.status == SynchronizationStatusWrapper.needInsert)
+        .toList();
+
+    for (final note in toInsert) {
+      final response = await _apiService.post(NotesEndpoint, note.toJson());
+      if (response.isCorrect) {
+        note.lastSynchronization = DateTime.now().toUtc();
+        note.statusSynchronization = SynchronizationStatusWrapper.ok;
+        await _noteRepository.update(note);
+      }
+    }
   }
 }

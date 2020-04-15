@@ -9,7 +9,8 @@
     "logout": "Logout",
     "welcome": "Welcome",
     "create": "Create",
-    "update": "Update"
+    "update": "Update",
+    "registered": "Registered! You can login."
   },
   "login": {
     "invalid": "Invalid credentials, please try again"

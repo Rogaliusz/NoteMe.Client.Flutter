@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:noteme/domain/common/status_enum.dart';
 import 'package:noteme/domain/notes/details/create/note_create_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_state.dart';
 import 'package:noteme/domain/notes/models/notes_model.dart';
@@ -33,6 +34,7 @@ class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
         note.content = event.content;
         note.createdAt = DateTime.now().toUtc();
         note.statusSynchronization = SynchronizationStatusWrapper.needInsert;
+        note.status = StatusWrapper.normal;
 
         final pos = await _locationService.getCurrentPostition();
         note.latitude = pos.latitude;

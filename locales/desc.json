@@ -9,7 +9,8 @@
     "logout": "Logout",
     "welcome": "Welcome",
     "create": "Create",
-    "update": "Update"
+    "update": "Update",
+    "registered": "registered"
   },
   "login": {
     "login": "Login",

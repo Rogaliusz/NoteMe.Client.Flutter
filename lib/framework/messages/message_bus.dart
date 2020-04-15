@@ -13,6 +13,11 @@ class MessageBus {
   MessageBus();
 
   Future<void> publish<TMessage extends Message>(TMessage message) async {
+    invokeHandlers(message);
+    invokeSubscriptions(message);
+  }
+
+  invokeHandlers<TMessage extends Message>(TMessage message) async {
     var messageHandlers = handlers[TMessage];
     if (messageHandlers == null || messageHandlers.length == 0) {
       return;
@@ -21,7 +26,9 @@ class MessageBus {
     for (final handler in messageHandlers) {
       await handler.handle(message);
     }
+  }
 
+  invokeSubscriptions<TMessage extends Message>(TMessage message) async {
     var subs = subscriptions[TMessage];
     if (subs == null || subs.length == 0) {
       return;

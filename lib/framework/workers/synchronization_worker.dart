@@ -39,7 +39,7 @@ class SynchronizationWorker {
 
   static Future<void> startTimer() async {
     await _synchro();
-    _timer = Timer.periodic(new Duration(seconds: 60), (Timer t) async {
+    _timer = Timer.periodic(new Duration(seconds: 20), (Timer t) async {
       await _synchro();
     });
   }

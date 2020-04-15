@@ -9,7 +9,8 @@
     "logout": "Wyloguj",
     "welcome": "Witaj",
     "create": "Stwórz",
-    "update": "Zaaktualizuj"
+    "update": "Zaaktualizuj",
+    "registered": "Zarejestrowano. Możesz się zalogować"
   },
   "login": {
     "invalid": "Niepoprawne dane do zalogowania, spróbuj ponownie."

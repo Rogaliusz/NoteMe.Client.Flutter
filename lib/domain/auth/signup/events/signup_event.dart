@@ -2,8 +2,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'signup_event.g.dart';
 
+abstract class SignupEventBase {}
+
 @JsonSerializable()
-class SignupEvent {
+class SignupEvent extends SignupEventBase {
+  String id;
   String email;
   String password;
 

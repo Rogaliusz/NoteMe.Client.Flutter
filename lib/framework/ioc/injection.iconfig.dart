@@ -61,7 +61,8 @@ void $initGetIt({String environment}) {
     ..registerLazySingleton<LoggedMessageHandler>(
         () => LoggedMessageHandler(getIt<ApiSettings>(), getIt<ApiService>()))
     ..registerFactory<SignupPage>(() => SignupPage())
-    ..registerFactory<SignupPageState>(() => SignupPageState())
+    ..registerFactory<SignupPageState>(
+        () => SignupPageState(getIt<ToastService>()))
     ..registerFactory<SignupBloc>(() => SignupBloc(getIt<ApiService>()))
     ..registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           getIt<ApiService>(),
@@ -77,7 +78,8 @@ void $initGetIt({String environment}) {
     ..registerFactory<NotesDrawer>(() => NotesDrawer(getIt<ApiSettings>()))
     ..registerFactory<NoteFormBloc>(() => NoteFormBloc())
     ..registerFactory<NoteCreatePage>(() => NoteCreatePage())
-    ..registerFactory<NoteCreatePageState>(() => NoteCreatePageState())
+    ..registerFactory<NoteCreatePageState>(
+        () => NoteCreatePageState(getIt<MessageBus>()))
     ..registerFactory<NoteCreateBloc>(
         () => NoteCreateBloc(getIt<NoteRepository>(), getIt<LocationService>()))
     ..registerFactory<NotesPage>(() => NotesPage())

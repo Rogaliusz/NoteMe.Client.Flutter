@@ -30,6 +30,8 @@ class AuthenticationBloc
 
     if (event is AppStarted) {
       if (user != null) {
+        _apiService.setToken(user.token);
+        await SynchronizationWorker.start();
         yield AuthenticationAuthenticated();
       } else {
         yield AuthenticationUnauthenticated();

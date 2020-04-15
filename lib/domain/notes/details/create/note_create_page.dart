@@ -7,8 +7,10 @@ import 'package:noteme/domain/notes/bloc/notes_event.dart';
 import 'package:noteme/domain/notes/details/create/note_create_bloc.dart';
 import 'package:noteme/domain/notes/details/create/note_create_event.dart';
 import 'package:noteme/domain/notes/details/form/note_form.dart';
+import 'package:noteme/domain/notes/notes_message.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
+import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/navigation/navigrator.dart';
 import 'package:noteme/theme/backgrounds/logged_background.dart';
 import 'package:noteme/theme/colors.dart';
@@ -33,11 +35,13 @@ class NoteCreatePageState extends State<NoteCreatePage> {
   final TextEditingController contentController = new TextEditingController();
   final GlobalKey<FormState> key = new GlobalKey<FormState>();
   final List<String> attachments = new List<String>();
+  final MessageBus _bus;
+
+  NoteCreatePageState(this._bus);
 
   @override
-  Widget build(BuildContext context) {
-    final locale = NoteMeLocaleFactory.of(context);
-
+  Widget build(BuildContext parentContext) {
+    final locale = NoteMeLocaleFactory.of(parentContext);
     return Scaffold(
       appBar: AppBar(
         title: Text(locale.global.add),
@@ -53,6 +57,7 @@ class NoteCreatePageState extends State<NoteCreatePage> {
               }
 
               if (state is NoteCreatedState) {
+                _bus.publish<NotesRetriveredMessage>(NotesRetriveredMessage());
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   NoteMeNavigator.popUntil(context, (route) => route.isFirst);
                 });
