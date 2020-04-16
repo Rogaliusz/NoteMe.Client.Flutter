@@ -5,6 +5,7 @@ import 'package:noteme/domain/notes/details/update/note_update_event.dart';
 import 'package:noteme/domain/notes/details/update/note_update_state.dart';
 import 'package:noteme/domain/notes/notes_repository.dart';
 import 'package:noteme/framework/synchronizators/synchornization_provider.dart';
+import 'package:uuid/uuid.dart';
 
 @injectable
 class NoteUpdateBloc extends Bloc<NoteUpdateBaseEvent, NoteUpdateState> {
@@ -41,6 +42,7 @@ class NoteUpdateBloc extends Bloc<NoteUpdateBaseEvent, NoteUpdateState> {
         await _noteRepository.update(note);
 
         for (final attachment in event.attachments) {
+          attachment.noteId = note.id;
           await _attachmentRepository.insert(attachment);
         }
         yield NoteUpdatedState();

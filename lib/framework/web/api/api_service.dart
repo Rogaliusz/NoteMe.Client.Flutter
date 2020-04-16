@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 import 'package:noteme/framework/web/api/responses/api_response.dart';
+import 'package:path/path.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'api_settings.dart';
 
@@ -54,6 +57,40 @@ class ApiService {
 
     return new ApiResponse(
         json.decode(response.body), response.body, response.statusCode);
+  }
+
+  Future downloadFile(String endpoint, String path) async {
+    var url = getUrl(endpoint);
+    var bytes = await _client.readBytes(url, headers: _headers);
+    await File(path).writeAsBytes(bytes);
+  }
+
+  Future uploadFile(String endpoint, String path, String id) async {
+    var file = File(path);
+    var isExists = await file.exists();
+    if (!isExists) {
+      return;
+    }
+
+    final url = getUrl(endpoint);
+    final uri = Uri.parse(url);
+    final ext = extension(path);
+
+    final req = http.MultipartRequest("POST", uri);
+    req.files.add(await http.MultipartFile.fromPath(
+      "file",
+      file.path,
+      filename: id + ext,
+    ));
+
+    req.headers[HttpHeaders.authorizationHeader] =
+        _headers[HttpHeaders.authorizationHeader];
+
+    final response = await req.send();
+    print(response.statusCode);
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
   }
 
   getUrl(String endpoint) {

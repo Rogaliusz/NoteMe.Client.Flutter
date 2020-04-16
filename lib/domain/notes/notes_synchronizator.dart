@@ -24,9 +24,9 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
   @override
   Future<void> syncIt(Synchronization synchronization) async {
+    await update(synchronization);
     await fetch(synchronization);
     await insert(synchronization);
-    await update(synchronization);
   }
 
   Future fetch(Synchronization synchronization) async {
@@ -54,8 +54,6 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
       for (var noteDto in notes.data) {
         var note = await _noteRepository.fetchById(noteDto.id);
-
-        if (note != null) continue;
 
         if (noteDto.status == StatusWrapper.normal) {
           allNotes.add(note);
@@ -94,7 +92,7 @@ class NotesSynchronizator implements SynchronizationHandlerBase<Note> {
 
     for (final note in toUpdate) {
       final response =
-          await _apiService.post(NotesEndpoint + note.id, note.toJson());
+          await _apiService.put(NotesEndpoint + note.id, note.toJson());
       if (response.isCorrect) {
         note.lastSynchronization = DateTime.now().toUtc();
         note.statusSynchronization = SynchronizationStatusWrapper.ok;

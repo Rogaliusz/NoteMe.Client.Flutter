@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:noteme/domain/notes/attachments/models/attachment_model.dart';
 import 'package:noteme/domain/notes/models/notes_model.dart';
 
 part 'api_collection_response.g.dart';
@@ -24,6 +25,10 @@ class _Converter<T> implements JsonConverter<T, Object> {
   T fromJson(Object json) {
     if (T == Note) {
       return Note.fromJson(json) as T;
+    }
+
+    if (T == Attachment) {
+      return Attachment.fromJson(json) as T;
     }
 
     return json as T;

@@ -65,16 +65,16 @@ class NoteMeApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationUninitialized) {
-            return getIt<SplashPage>();
+            return SplashPage();
           }
           if (state is AuthenticationAuthenticated) {
-            return getIt<NotesPage>();
+            return NotesPage();
           }
           if (state is AuthenticationUnauthenticated) {
-            return getIt<LoginPage>();
+            return LoginPage();
           }
           if (state is AuthenticationLoading) {
-            return getIt<LoadingIndicator>();
+            return LoadingIndicator();
           }
         },
       ),

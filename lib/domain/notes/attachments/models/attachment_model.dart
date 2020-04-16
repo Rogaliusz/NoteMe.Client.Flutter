@@ -18,5 +18,7 @@ class Attachment implements SynchonizationProvider {
   factory Attachment.fromJson(Map<String, dynamic> json) =>
       _$AttachmentFromJson(json);
 
+  get status => null;
+
   Map<String, dynamic> toJson() => _$AttachmentToJson(this);
 }

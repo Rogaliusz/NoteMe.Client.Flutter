@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:noteme/domain/notes/attachments/attachment_synchronizator.dart';
 import 'package:noteme/domain/notes/notes_synchronizator.dart';
 import 'package:noteme/framework/synchronizators/models/synchronization_model.dart';
 import 'package:noteme/framework/synchronizators/synchornization_provider.dart';
@@ -12,8 +13,10 @@ abstract class SynchronizatorBase<TModel> {
 class MainSynchronizator {
   final SynchronizationRepository _repository;
   final NotesSynchronizator _notesSynchronizator;
+  final AttachmentsSynchronizator _attachmentsSynchronizator;
 
-  MainSynchronizator(this._repository, this._notesSynchronizator);
+  MainSynchronizator(this._repository, this._notesSynchronizator,
+      this._attachmentsSynchronizator);
 
   Future<void> synchronize() async {
     var synchros = await _repository.fetch();
@@ -30,6 +33,7 @@ class MainSynchronizator {
     var lastSync = synchros[0];
 
     await _notesSynchronizator.syncIt(lastSync);
+    await _attachmentsSynchronizator.syncIt(lastSync);
 
     lastSync.lastSynchronization = DateTime.now().toUtc();
     await _repository.update(lastSync);

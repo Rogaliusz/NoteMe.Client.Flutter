@@ -47,6 +47,8 @@ class NoteCreateBloc extends Bloc<NoteCreateBaseEvent, NoteCreateState> {
 
         for (final attachment in event.attachments) {
           attachment.noteId = note.id;
+          attachment.statusSynchronization =
+              SynchronizationStatusWrapper.needInsert;
           await _attachmentRepository.insert(attachment);
         }
 

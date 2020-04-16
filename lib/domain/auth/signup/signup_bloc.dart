@@ -32,8 +32,8 @@ class SignupBloc extends Bloc<SignupEventBase, SignupState> {
       } else {
         yield new SignupErrorState(response.body);
       }
+    } else {
+      yield SignupInitializedState();
     }
-
-    yield SignupInitializedState();
   }
 }

@@ -8,6 +8,7 @@ import 'package:noteme/framework/synchronizators/synchronization_repository.dart
 import 'package:noteme/framework/sql/database_factory.dart';
 import 'package:noteme/framework/synchronizators/synchronization.dart';
 import 'package:noteme/domain/notes/notes_synchronizator.dart';
+import 'package:noteme/domain/notes/attachments/attachment_synchronizator.dart';
 import 'package:noteme/framework/messages/message_bus.dart';
 import 'package:noteme/framework/hardware/camera/camera_service.dart';
 import 'package:noteme/framework/hardware/camera/camera_screen.dart';
@@ -44,7 +45,10 @@ void $initGetIt({String environment}) {
     ..registerFactory<SynchronizationRepository>(
         () => SynchronizationRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<MainSynchronizator>(() => MainSynchronizator(
-        getIt<SynchronizationRepository>(), getIt<NotesSynchronizator>()))
+          getIt<SynchronizationRepository>(),
+          getIt<NotesSynchronizator>(),
+          getIt<AttachmentsSynchronizator>(),
+        ))
     ..registerLazySingleton<MessageBus>(() => MessageBus())
     ..registerLazySingleton<CameraService>(() => CameraService())
     ..registerFactory<CameraScreen>(() => CameraScreen())
@@ -101,5 +105,8 @@ void $initGetIt({String environment}) {
         () => AttachmentRepository(getIt<NoteMeDatabaseFactory>()))
     ..registerFactory<NoteUpdatePage>(() => NoteUpdatePage())
     ..registerFactory<NoteUpdatePageState>(
-        () => NoteUpdatePageState(getIt<MessageBus>()));
+        () => NoteUpdatePageState(getIt<MessageBus>()))
+    ..registerLazySingleton<AttachmentsSynchronizator>(() =>
+        AttachmentsSynchronizator(
+            getIt<ApiService>(), getIt<AttachmentRepository>()));
 }

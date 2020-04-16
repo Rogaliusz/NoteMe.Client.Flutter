@@ -9,6 +9,7 @@ import 'package:noteme/domain/notes/details/form/note_form_event.dart';
 import 'package:noteme/framework/hardware/camera/camera_screen.dart';
 import 'package:noteme/framework/i18n/local_factory.dart';
 import 'package:noteme/framework/ioc/injection.iconfig.dart';
+import 'package:noteme/framework/synchronizators/synchornization_provider.dart';
 import 'package:noteme/generated/locale_base.dart';
 import 'package:noteme/theme/colors.dart';
 import 'package:noteme/theme/widgets/form/text_input_form_control.dart';
@@ -199,6 +200,7 @@ class NoteForm extends StatelessWidget {
     attachment.id = Uuid().v1();
     attachment.path = file.path;
     attachment.name = basename(file.path);
+    attachment.statusSynchronization = SynchronizationStatusWrapper.needInsert;
 
     attachments.add(attachment);
 
