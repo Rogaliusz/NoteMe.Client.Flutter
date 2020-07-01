@@ -60,7 +60,7 @@ class AttachmentsSynchronizator
           all.add(attachment);
         }
 
-        await _repository.insert(attachment);
+        await _repository.insert(attachmentDto);
       }
     } while (hasMore);
   }
@@ -100,8 +100,8 @@ class AttachmentsSynchronizator
   Future<void> download(Synchronization synchronization) async {
     var attachmentsWithoutPath = await _repository.fetch();
 
-    for (final attachment in attachmentsWithoutPath
-        .where((x) => x.path.isEmpty || File(x.path).existsSync())) {
+    for (final attachment in attachmentsWithoutPath.where(
+        (x) => x.path == null || x.path.isEmpty || File(x.path).existsSync())) {
       final directory = await getApplicationDocumentsDirectory();
       var fullFilePath = join(directory.path, attachment.name);
 
